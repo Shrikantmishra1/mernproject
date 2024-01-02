@@ -3,6 +3,7 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from 'dotenv';
 import userRoutes from './routes/user.route.js';
+import authRoutes from './routes/auth.route.js';
 // mongoose.connect(
 //   "mongodb+srv://mishrashri2001:root@mern.hrqva.mongodb.net/?mern=true&w=majority"
 // );
@@ -15,7 +16,7 @@ mongoose.connect(process.env.MONGO).then(()=>{
        console.log(err);
 })
 const app = express();
-
+app.use(express.json());
  app.listen(5002, () => {
       console.log("listen to 5002 port");
 });
@@ -26,3 +27,4 @@ const app = express();
 //       })
 //   })
 app.use("/api/user",userRoutes);
+app.use("/api/auth",authRoutes);

@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import { Link,useNavigate } from 'react-router-dom'
-
+import { useDispatch, useSelector } from 'react-redux';
+import { signInStart,signInFailure,signInSuccess } from '../redux/user/userSlice';
 const SignIn = () => {
   const navigate=useNavigate();
+  const dispatch=useDispatch();
     const [formData,setFormData]=useState({});
-    const [error,setError]=useState(false);
-    const [loading,setLoading]=useState(false);
+     const {loading,error}=useSelector((state)=>state.user);
 const handelChange=(e)=>{
     setFormData({ ...formData,
         [e.target.id]:e.target.value});
@@ -14,7 +15,7 @@ const handelChange=(e)=>{
 const handelSubmit= async(e)=>{
 e.preventDefault();
 try {
-    setLoading(true);
+    dispatch(signInStart());
     const res=await fetch('/api/auth/signin/',{
 
         method: 'POST',
@@ -23,24 +24,23 @@ try {
 
     });
     const data=await res.json();
-    setLoading(false);
-    setError(false);
+    
+      
     if(data.success===false){
-        setError(true);
+        dispatch(signInFailure(data));
         return ;
     }
+    dispatch(signInSuccess(data));
     navigate('/');
 } catch (error) {
-    setLoading(false);
-    setError(true);
-    console.log(error);
+      dispatch(signInFailure(error));
 }
 
 
 }
   return (
      <div className='p-4 max-w-lg mx-auto'>
-         <h1 className='text-3xl text-center font-semibold my-7'>SignIn      </h1>
+         <h1 className='text-3xl text-center font-semibold my-7'>SignIn </h1>
  
          <form className='flex flex-col gap-4' onSubmit={handelSubmit}>
            
@@ -61,7 +61,7 @@ try {
                 </Link>
                  
             </div>
-            <p className='text-three'>{error && 'Something went wrong'}</p>
+            <p className='text-three'>{error ? error.message || 'Wrong credentials ' :""}</p>
      </div>
 
   )

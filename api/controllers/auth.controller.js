@@ -12,7 +12,7 @@ export const   signup=async(req,res,next)=>{
     });
     } catch (error) {
        
-        next(error);
+        next(error.message);
         //custom error for 
        // next(errorHandler(300,"Something went wrong"));
     }

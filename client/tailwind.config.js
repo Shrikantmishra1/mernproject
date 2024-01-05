@@ -15,8 +15,11 @@ export default {
       'six': '#DC2626',
       'tahiti': '#3ab7bf',
       'silver': '#ecebff',
-      'bubble-gum': '#ff77e9',
+      'bubble-gum': '#78716C',
       'bermuda': '#FFFBEB',
+      'one':'#F8FAFC',
+      
+
     },
   },
   plugins: [],
